@@ -27,7 +27,7 @@ First, build `cmdstat` with Rust:
 
 ```bash
 cargo build --release
-cp target/release/cmdstat ~/.local/bin/  # or any directory in your PATH
+install -Dm755 target/release/cmdstat ~/.local/bin/  # or any directory in your PATH
 ```
 
 ### Install the Zsh plugin
