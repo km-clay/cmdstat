@@ -1,0 +1,15 @@
+[package]
+name = "cmdstat"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bitflags = "2.9.0"
+clap = { version = "4.5.37", features = [ "derive" ] }
+console = "0.15.11"
+crossterm = "0.29.0"
+dirs = "6.0.0"
+libc = "0.2.172"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+unicode-width = "0.2.0"
