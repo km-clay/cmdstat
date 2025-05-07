@@ -230,11 +230,11 @@ impl CmdStats {
 
 		for entry in &self.entries.0 {
 			let Entry { command, count, kind: _, dirs: _ } = entry;
-			let percentage = ((*count as f64 / total as f64) * 100.0) as usize;
+			let percentage = (*count as f64 / total as f64) * 100.0;
 			let cmd_cell = Cell::new(command);
 			let count_cell = Cell::new(count);
-			let bar_cell = Cell::new(get_bar(percentage, bar_width())).with_color(Color::Green);
-			let perc_cell = Cell::new(format!("{percentage}%"));
+			let bar_cell = Cell::new(get_bar(percentage as usize, bar_width())).with_color(Color::Green);
+			let perc_cell = Cell::new(format!("{percentage:.01}%"));
 
 			let row = Row::new()
 				.with_cell(cmd_cell)
@@ -281,22 +281,21 @@ fn get_bar(percentage: usize, term_width: usize) -> String {
 	let full_bars = scaled_percentage.floor() as usize;
 	let remainder = ((scaled_percentage - full_bars as f64) * 10.0).round() as usize;
 	let mut bar = BAR_CHARS[7].repeat(full_bars);
-	if remainder > 0 {
-		let bar_index = match remainder {
-			1 => 0,
-			2 => 1,
-			3 |
-			4 => 2,
-			5 |
-			6 => 3,
-			7 => 4,
-			8 => 5,
-			9 => 6,
-			10 => 7,
-			_ => unreachable!(),
-		};
-		bar.push_str(BAR_CHARS[bar_index]);
-	}
+	let bar_index = match remainder {
+		0 | // Zero percent still gets a bar
+		1 => 0,
+		2 => 1,
+		3 |
+		4 => 2,
+		5 |
+		6 => 3,
+		7 => 4,
+		8 => 5,
+		9 => 6,
+		10 => 7,
+		_ => unreachable!(),
+	};
+	bar.push_str(BAR_CHARS[bar_index]);
 	bar
 }
 
