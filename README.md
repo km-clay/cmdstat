@@ -62,12 +62,6 @@ cmdstat
 cmdstat --all
 ```
 
-### Show specific command details
-
-```bash
-cmdstat --command cargo
-```
-
 ### Machine-friendly output (for scripts)
 
 ```bash
