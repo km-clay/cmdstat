@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fmt::Display, fs, path::PathBuf, str::FromStr};
 
 use clap::{arg, command, Parser};
-use crossterm::{style::Color, terminal};
+use crossterm::{style::{Color, Stylize}, terminal};
 use dirs::data_local_dir;
 use serde::Deserialize;
 use table::{Cell, Row, Table};
@@ -23,11 +23,11 @@ const BAR_CHARS: [&str;8] = [
 #[command(author, version, about)]
 struct Cli {
 	/// Display all commands
-	#[arg(short, long)]
+	#[arg(short, long, help = "Display all commands from the stats file. Ignores --num.")]
 	all: bool,
 
 	/// Number of entries to display
-	#[arg(short, long, default_value = "10")]
+	#[arg(short, long, default_value = "10", help = "Choose a specific number of commands to show.")]
 	num: usize,
 
 	/// Display extra info about each command
@@ -35,11 +35,16 @@ struct Cli {
 	long: bool,
 
 	/// Display info on a single command
-	#[arg(long)]
+	#[arg(long, help = "Displays detailed information for a specific command.")]
 	command: Option<String>,
 
-	/// Specify which headers to use
-	#[arg(long, value_delimiter = ',')]
+	/// Specify which columns to display
+	#[arg(long, value_delimiter = ',', long_help = "Choose specific columns to display. Possible options are:
+		'command/cmd',
+		'count/calls',
+		'usage/bar',
+		'percent/pct/%',
+		'type'.")]
 	columns: Vec<TableColumn>,
 
 	/// Specify which column to sort by
@@ -164,7 +169,7 @@ impl CmdStats {
 			let col_idx = table.find_col_idx(col).unwrap(); // TODO: handle this unwrap
 			table.set_sort_column(col_idx);
 		} else {
-			let col_idx = table.find_col_idx("Calls").unwrap_or(1);
+			let col_idx = table.find_col_idx(TableColumn::Count).unwrap_or(0);
 			table.set_sort_column(col_idx);
 		}
 		if self.cli.reverse {
@@ -219,7 +224,7 @@ impl CmdStats {
 		let mut table = Table::new()
 			.with_n_columns(4)
 			.with_heading(0, "Command")
-			.with_heading(1, "Calls")
+			.with_heading(1, "Count")
 			.with_heading(2, "Percent")
 			.with_heading(3, "Usage");
 
@@ -242,7 +247,11 @@ impl CmdStats {
 		table
 	}
 	pub fn print_entries(&mut self) {
-		let table = self.get_entry_table();
+		let table = self.get_entry_table()
+			.with_title("Command Statistics".with(Color::Cyan).bold());
+		if !self.cli.no_header {
+			println!();
+		}
 		print!("{table}");
 	}
 }

@@ -3,10 +3,9 @@ use std::fmt::Display;
 use crossterm::style::{Color, Stylize};
 use unicode_width::UnicodeWidthStr;
 
-use crate::TableColumn;
-
 #[derive(Default,Debug)]
 pub struct Table {
+	title: Option<String>,
 	headings: Vec<String>,
 	columns: usize,
 	rows: Vec<Row>,
@@ -21,14 +20,18 @@ impl Table {
 		Self::default()
 	}
 	pub fn with_n_columns(self, n: usize) -> Self {
-		let Self { headings, columns: _, rows, spacer, sort_by, reverse, no_header } = self;
-		Self { headings, columns: n, rows, spacer, sort_by, reverse, no_header }
+		let Self { title, headings, columns: _, rows, spacer, sort_by, reverse, no_header } = self;
+		Self { title, headings, columns: n, rows, spacer, sort_by, reverse, no_header }
 	}
 	pub fn with_heading<S: ToString>(self, field_num: usize, heading: S) -> Self {
 		assert!(field_num < self.columns);
-		let Self { mut headings, columns, rows, spacer, sort_by, reverse, no_header } = self;
+		let Self { title, mut headings, columns, rows, spacer, sort_by, reverse, no_header } = self;
 		headings.insert(field_num, heading.to_string());
-		Self { headings, columns, rows, spacer, sort_by, reverse, no_header }
+		Self { title, headings, columns, rows, spacer, sort_by, reverse, no_header }
+	}
+	pub fn with_title<S: ToString>(self, title: S) -> Self {
+		let Self { title: _, headings, columns, rows, spacer, sort_by, reverse, no_header } = self;
+		Self { title: Some(title.to_string()), headings, columns, rows, spacer, sort_by, reverse, no_header }
 	}
 	pub fn omit_header(&mut self, yn: bool) {
 		self.no_header = yn;
@@ -111,6 +114,10 @@ impl Display for Table {
 
 		// headings
 		if !self.headings.is_empty() && !self.no_header {
+			if let Some(title) = &self.title {
+				writeln!(f, "{title}")?;
+				writeln!(f, "{}", "-".repeat(widths.iter().sum::<usize>() + self.columns))?;
+			}
 			for (i, heading) in self.headings.iter().enumerate() {
 				write!(f, "{:<width$} ", heading, width = widths[i])?;
 			}
@@ -129,6 +136,9 @@ impl Display for Table {
 				}
 			}
 			writeln!(f)?;
+		}
+		if !self.no_header {
+			writeln!(f, "{}", "-".repeat(widths.iter().sum::<usize>() + self.columns))?;
 		}
 
 		Ok(())
