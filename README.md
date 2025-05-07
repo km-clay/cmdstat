@@ -1,6 +1,6 @@
 # cmdstat
 
-A simple and powerful command usage statistics tool for Unix-like shells. Tracks which commands you use, how often, and where you use them from.
+A simple and composable command usage statistics tool for Zsh. Tracks which commands you use, how often, and where you use them from.
 
 This project consists of:
 
