@@ -134,7 +134,7 @@ pub struct Entry {
 	dirs: HashMap<PathBuf,u32>,
 }
 
-#[derive(Deserialize,Debug)]
+#[derive(Deserialize,Debug,Default)]
 pub struct Entries(Vec<Entry>);
 
 impl Entries {
@@ -306,7 +306,7 @@ fn main() {
 		println!("{raw}");
 		return
 	}
-	let entries: Entries = serde_json::from_str(&raw).unwrap();
+	let entries: Entries = serde_json::from_str(&raw).unwrap_or_default();
 	let mut cmd_stats = CmdStats { entries, cli };
 	cmd_stats.print_entries();
 }
