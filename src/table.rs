@@ -48,21 +48,25 @@ impl Table {
 	}
 	pub fn calc_cell_widths(&self) -> Vec<usize> {
 		let mut widths = vec![];
+		Self::update_cell_widths(&mut widths, self.headings.iter().map(|s| s.as_str()));
 		for row in &self.rows {
 			let Row { cells } = &row;
 			assert!(cells.len() == self.columns);
-			for (i, cell) in cells.iter().enumerate() {
-				let visible_width: usize = console::strip_ansi_codes(&cell.content).width();
-				if let Some(width) = widths.get(i) {
-					if visible_width > *width {
-						widths[i] = visible_width;
-					}
-				} else {
-					widths.insert(i, visible_width);
-				}
-			}
+			Self::update_cell_widths(&mut widths, cells.iter().map(|c| c.content.as_str()));
 		}
 		widths
+	}
+	fn update_cell_widths<'a>(widths: &mut Vec<usize>, cells: impl IntoIterator<Item = &'a str>) {
+		for (i, cell) in cells.into_iter().enumerate() {
+			let visible_width: usize = console::strip_ansi_codes(cell).width();
+			if let Some(width) = widths.get(i) {
+				if visible_width > *width {
+					widths[i] = visible_width;
+				}
+			} else {
+				widths.insert(i, visible_width);
+			}
+		}
 	}
 	pub fn set_sort_column(&mut self, col_idx: usize) {
 		self.sort_by = Some(col_idx)
