@@ -9,6 +9,12 @@ This project consists of:
 
 ---
 
+## Dependencies
+
+* This plugin relies on `jq` to serialize command statistics.
+
+---
+
 ## Features
 
 * Human-friendly tabular output
