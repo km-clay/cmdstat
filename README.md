@@ -100,6 +100,18 @@ cmdstat --json
 
 ---
 
+## Screenshots
+
+![cmdstat1](https://github.com/user-attachments/assets/ba2abdfe-efb0-422d-8b16-3882e3e71d10)
+---
+![cmdstat2](https://github.com/user-attachments/assets/ad260431-0b60-4a79-b2f3-d1af413b9598)
+---
+![cmdstat3](https://github.com/user-attachments/assets/6331e9bd-e011-43b4-a865-79d1ae362ca8)
+
+
+
+---
+
 ## Notes
 
 * The Zsh plugin only tracks commands after it has been loaded.
