@@ -108,7 +108,10 @@ cmdstat --json
 ---
 ![cmdstat3](https://github.com/user-attachments/assets/6331e9bd-e011-43b4-a865-79d1ae362ca8)
 
+## Notes
 
+* The stats file is saved to `~/.local/share/cmdstat/stats.json`. The `$CMDSTAT_FILE` environment variable can override this path.
+* Only commands executed interactively will be tracked by the plugin. Commands executed in scripts will not be written to the stats file.
 
 ---
 
