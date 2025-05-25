@@ -31,6 +31,10 @@ struct Cli {
 	#[arg(short, long, help = "Display all commands from the stats file. Ignores --num.")]
 	all: bool,
 
+	/// Display the total number of calls across all commands
+	#[arg(long)]
+	total: bool,
+
 	/// Number of entries to display
 	#[arg(short, long, default_value = "20", help = "Choose a specific number of commands to show.")]
 	num: usize,
@@ -548,7 +552,10 @@ fn main() {
 	let mut entries: Entries = serde_json::from_str(&raw).unwrap_or_default();
 	if !cli.commands.is_empty() {
 		entries.0.retain(|ent| cli.commands.contains(&ent.command));
-		if cli.long {
+		if cli.total {
+			let total = entries.0.iter().fold(0, |acc, ent| { acc + ent.count });
+			println!("{total}");
+		} else if cli.long {
 			let mut output = String::new();
 			entries.sort_entries();
 			for entry in entries.0 {
@@ -561,6 +568,9 @@ fn main() {
 			let output = cmd_stats.format_entries(bar_color);
 			handle_output(&output, no_pager);
 		}
+	} else if cli.total {
+		let total = entries.0.iter().fold(0, |acc, ent| { acc + ent.count });
+		println!("{total}");
 	} else if cli.long {
 		let mut output = String::new();
 		entries.sort_entries();
