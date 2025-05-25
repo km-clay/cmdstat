@@ -119,8 +119,5 @@ cmdstat --json
 
 ---
 
-## License
-
-MIT
-
----
+## Why this instead of zsh_stats?
+Zsh technically does include a builtin function called `zsh_stats` which prints command usage statistics to the terminal. However, the numbers that `zsh_stats` bases it's output on comes from reading your command history, which may not actually be an accurate representation of your command usage. For instance, running the same command several times in a row will not be counted in zsh_stats if you have HIST_IGNORE_DUPS set. I decided that I want a higher resolution image of my command usage statistics, so I wrote this thing.
