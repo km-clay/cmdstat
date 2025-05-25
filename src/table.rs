@@ -107,6 +107,9 @@ impl Table {
 impl Display for Table {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let mut widths = self.calc_cell_widths();
+		if widths.is_empty() {
+			return Ok(()) // Nothing to do
+		}
 		for (i,width) in widths.iter_mut().enumerate() {
 			if let Some(heading) = &self.headings.get(i) {
 				let heading_width = console::strip_ansi_codes(heading).width();
