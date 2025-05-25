@@ -114,7 +114,6 @@ cmdstat --json
 
 ## Notes
 
-* The Zsh plugin only tracks commands after it has been loaded.
 * The stats file is stored at `~/.local/share/cmdstat/stats.json` by default.
 
 ---
