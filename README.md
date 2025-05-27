@@ -85,17 +85,25 @@ cmdstat --json
 ## Options
 
 ```
--a, --all                 Display all commands (ignore limit)
--n, --num <NUM>           Number of entries to display [default: 10]
--l                        Show detailed info for each command
-    --command <COMMAND>   Display stats for a single command
-    --columns <COLUMNS>   Select columns to display (comma-separated)
-    --sort <COLUMN>       Sort output by column
-    --reverse             Reverse the sort order
-    --json                Output raw JSON data
-    --no-header           Omit table headers (for scripts)
--h, --help                Show help
--V, --version             Show version
+Usage: cmdstat [OPTIONS] [COMMANDS]...
+
+Arguments:
+  [COMMANDS]...  Display statistics for specific commands
+
+Options:
+  -a, --all                    Display all commands from the stats file. Ignores --num.
+  -n, --num <NUM>              Choose a specific number of commands to show. [default: 20]
+  -l                           Display extra info about each command
+      --columns <COLUMNS>      Specify which columns to display
+      --sort <SORT>            Specify which column to sort by
+      --reverse                Reverse the sort
+      --json                   Dump raw json
+      --no-header              Omit the table headers
+      --bar-color <BAR_COLOR>  Choose a custom bar color
+      --no-pager               
+      --clear-stats            
+  -h, --help                   Print help (see more with '--help')
+  -V, --version                Print version
 ```
 
 ---
