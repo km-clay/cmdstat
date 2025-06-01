@@ -27,27 +27,31 @@ This project consists of:
 
 ## Installation
 
+### Clone the directory to your plugins folder
+
+If you're using oh-my-zsh, the default command for this would be
+```bash
+git clone https://github.com/km-clay/cmdstat ~/.oh-my-zsh/custom/plugins/cmdstat
+```
+
 ### Install the CLI tool
 
-First, build `cmdstat` with Rust:
+cd to the cloned directory, and build `cmdstat` with Rust:
 
 ```bash
 cargo build --release
 install -Dm755 target/release/cmdstat ~/.local/bin/  # or any directory in your PATH
 ```
 
-### Install the Zsh plugin
-
-Copy the plugin to your Zsh configuration directory:
-
-```bash
-cp plugin/cmdstat.plugin.zsh ~/.config/zsh/custom/cmdstat.plugin.zsh
-```
-
 Then, source it in your `.zshrc`:
 
 ```bash
 source ~/.config/zsh/custom/cmdstat.plugin.zsh
+```
+
+Or, if you're using oh-my-zsh:
+```bash
+plugins=(... cmdstat)
 ```
 
 This will enable automatic command logging to `~/.local/share/cmdstat/stats.json`.
